@@ -1,0 +1,172 @@
+<!-- Super Cute Apology Page with Growing Yes Button and Tricky No Button -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Will You Forgive Me?</title>
+<style>
+  :root {
+    --pink: #ff8fb1;
+    --light: #ffe5ef;
+    --accent: #ffc8dd;
+    --text: #6b2f5b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #fff1f7, #ffe4f2, #fef6ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .card {
+    background: white;
+    padding: 40px 50px;
+    border-radius: 30px;
+    box-shadow: 0 15px 40px rgba(255, 105, 180, 0.2);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  h1 {
+    color: var(--text);
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  p {
+    color: #a45a84;
+    margin-bottom: 30px;
+    font-size: 1rem;
+  }
+  .btn {
+    background: linear-gradient(135deg, var(--pink), var(--accent));
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+    transition: all 0.2s ease;
+    margin: 5px;
+  }
+  .btn:hover { transform: scale(1.07); box-shadow: 0 12px 28px rgba(255, 105, 180, 0.45); }
+  .btn:active { transform: scale(0.98); }
+
+  .no-btn {
+    background: linear-gradient(135deg, #ddd, #f3f3f3);
+    color: #888;
+    position: relative;
+  }
+
+  .hearts { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .heart {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: var(--pink);
+    transform: rotate(45deg);
+    animation: floaty 6s linear infinite;
+  }
+  .heart::before,
+  .heart::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: var(--pink);
+    border-radius: 50%;
+  }
+  .heart::before { top: -12px; left: 0; }
+  .heart::after { left: -12px; top: 0; }
+  @keyframes floaty {
+    0% { transform: translateY(0) rotate(45deg) scale(1); opacity: 1; }
+    100% { transform: translateY(-200px) rotate(45deg) scale(0.6); opacity: 0; }
+  }
+  .popup {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(255, 240, 250, 0.8);
+    backdrop-filter: blur(5px);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    z-index: 10;
+  }
+  .popup h2 {
+    font-size: 2rem;
+    color: var(--text);
+  }
+  .popup span {
+    font-size: 2.5rem;
+    display: inline-block;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Will You Forgive Me? 🥺💖</h1>
+    <p>I'm sorry Jur, hope u can forgive me :)))</p>
+    <div>
+      <button id="yesBtn" class="btn yes-btn">Yes, I Forgive You 💕</button>
+      <button id="noBtn" class="btn no-btn">No 😢</button>
+    </div>
+    <div class="hearts"></div>
+  </div>
+
+  <div class="popup" id="popup">
+    <h2>Yay! Thank you! </h2>
+    <span>THXXXXX</span>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const heartsContainer = document.querySelector('.hearts');
+    const popup = document.getElementById('popup');
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.background = `hsl(${Math.random() * 360}, 80%, 75%)`;
+      heartsContainer.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+
+    setInterval(createHeart, 500);
+
+    yesBtn.addEventListener('click', () => {
+      popup.style.display = 'flex';
+      for(let i = 0; i < 20; i++) createHeart();
+      setTimeout(() => popup.style.display = 'none', 2500);
+    });
+
+    // No button avoids click and makes Yes button grow
+    let yesSize = 1;
+    noBtn.addEventListener('mouseenter', () => {
+      const x = Math.random() * (window.innerWidth - 120);
+      const y = Math.random() * (window.innerHeight - 60);
+      noBtn.style.position = 'fixed';
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+      noBtn.style.transition = '0.2s ease';
+    });
+
+    noBtn.addEventListener('click', () => {
+      yesSize += 0.3;
+      yesBtn.style.transform = `scale(${yesSize})`;
+      yesBtn.style.transition = 'transform 0.3s ease';
+    });
+  </script>
+</body>
+</html>
